@@ -37,7 +37,7 @@ function fish_right_prompt
 
   end
 
-  set -l path (prompt_pwd)
+  set -l path (pwd)
   set -l directory_info "$path"
 
   echo -n -s $git_info $directory_info
