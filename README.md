@@ -10,3 +10,7 @@ fish prompt, nothing more, nothing less.
 ### Demo
 
 ![Screenshot](screenshot.png?raw=true "Screenshot")
+
+-----
+
+[![asciicast](https://asciinema.org/a/32mrN5nW6cotdPI8MEGPzfFcs.png)](https://asciinema.org/a/32mrN5nW6cotdPI8MEGPzfFcs)
