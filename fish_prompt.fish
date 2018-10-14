@@ -60,22 +60,19 @@ function fish_prompt
   set -l colbwhite  (set_color -o white)
   function fish_mode_prompt; end
 
-  # vi mode
-  # If vi_mode plugin or native vi mode is activated then print the vi mode
-  # in the prompt.
-  set -l ps_vi ""
-  if test -n "$vi_mode"
-    set ps_vi $colnormal"["$vi_mode$colnormal"]"
-  end
-
-
-  set -l colbv (set_color -o e18)
+  # insert mode color
   if test $last_status = 0
     set colbi (set_color -o 2d4)
   else
     set colbi (set_color -o e11)
   end
+
+  set -l ps_vi ""
+  # normal mode color
   set -l colbn (set_color -o 778)
+  # visual mode color
+  set -l colbv (set_color -o e18)
+
   if test "$fish_key_bindings" = "fish_vi_key_bindings" -o "$fish_key_bindings" = "my_fish_key_bindings" 
     switch $fish_bind_mode
       case default
@@ -85,6 +82,8 @@ function fish_prompt
       case visual
         set ps_vi $colbv"[v] "$colnormal
     end
+  else
+    set ps_vi $colbi"→ "$colnormal
   end
 
   if [ (which rbenv) ]
