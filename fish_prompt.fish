@@ -39,8 +39,9 @@ function fish_right_prompt
 
   set -l path (prompt_pwd)
   set -l directory_info "$path"
+  set -l week_number (date "+%W/52")
 
-  echo -n -s $git_info $directory_info
+  echo -n -s $git_info $directory_info $week_number
 end
 
 
