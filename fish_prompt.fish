@@ -3,7 +3,7 @@ function fish_mode_prompt; end
 function fish_greeting; end
 
 function _git_branch_name
-  echo (command git symbolic-ref HEAD ^/dev/null | sed -e 's|^refs/heads/||')
+  echo (command git branch --no-color)
 end
 
 function _is_git_dirty
