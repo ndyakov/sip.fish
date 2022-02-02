@@ -39,8 +39,12 @@ function fish_right_prompt
 
   set -l path (prompt_pwd)
   set -l directory_info "$path"
+    if test $CMD_DURATION
+        # Show duration of the last command in seconds
+        set duration (echo "$CMD_DURATION 1000" | awk '{printf "%.3fs", $1 / $2}')
+    end
 
-  echo -n -s "$git_info $directory_info"
+  echo -n -s "$duration $git_info $directory_info"
 end
 
 
