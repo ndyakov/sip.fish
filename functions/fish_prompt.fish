@@ -10,20 +10,24 @@ function _is_git_dirty
   echo (command git status -s --ignore-submodules=dirty 2>/dev/null)
 end
 
+function _set_colors
+  set -g colyellow (set_color dbbc7f)
+  set -g colbyellow (set_color -o dbbc7f)
+  set -g colcyan   (set_color 83c092)
+  set -g colbcyan  (set_color -o 83c092)
+  set -g colblue  (set_color 7fbbb3)
+  set -g colbblue (set_color -o 7fbbb3)
+  set -g colgreen  (set_color a7c080)
+  set -g colbgreen (set_color -o a7c080)
+  set -g colnormal (set_color normal)
+  set -g colred    (set_color e67e80)
+  set -g colbred   (set_color -o e67e80)
+  set -g colwhite  (set_color f2efdf)
+  set -g colbwhite  (set_color -o f2efdf)
+end
+
 function fish_right_prompt
-  set -l colyellow (set_color yellow)
-  set -l colbyellow (set_color -o yellow)
-  set -l colcyan   (set_color cyan)
-  set -l colbcyan  (set_color -o cyan)
-  set -l colblue  (set_color blue)
-  set -l colbblue (set_color -o blue)
-  set -l colgreen  (set_color green)
-  set -l colbgreen (set_color -o green)
-  set -l colnormal (set_color normal)
-  set -l colred    (set_color red)
-  set -l colbred   (set_color -o red)
-  set -l colwhite  (set_color white)
-  set -l colbwhite  (set_color -o white)
+  _set_colors
   set git_info ""
   if [ (_git_branch_name) ]
     set -l git_branch $colwhite(_git_branch_name)
@@ -50,25 +54,14 @@ end
 
 function fish_prompt
   set -l last_status $status
-  set -l colyellow (set_color yellow)
-  set -l colcyan   (set_color cyan)
-  set -l colbcyan  (set_color -o cyan)
-  set -l colblue  (set_color blue)
-  set -l colbblue (set_color -o blue)
-  set -l colgreen  (set_color green)
-  set -l colbgreen (set_color -o green)
-  set -l colnormal (set_color normal)
-  set -l colred    (set_color red)
-  set -l colbred   (set_color -o red)
-  set -l colwhite  (set_color white)
-  set -l colbwhite  (set_color -o white)
+  _set_colors
   function fish_mode_prompt; end
 
   # insert mode color
   if test $last_status = 0
-    set colbi (set_color -o 2d4)
+    set colbi (set_color -o a7c080)  # Success: Everforest green
   else
-    set colbi (set_color -o e11)
+    set colbi (set_color -o e67e80)  # Error: Everforest red
   end
 
   set -l ps_vi ""
