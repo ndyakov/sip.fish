@@ -73,11 +73,11 @@ function fish_prompt
   if test "$fish_key_bindings" = "fish_vi_key_bindings" -o "$fish_key_bindings" = "my_fish_key_bindings" 
     switch $fish_bind_mode
       case default
-        set ps_vi $colbn"[n] "$colnormal
+        set ps_vi $colbn" n "$colnormal
       case insert
         set ps_vi $colbi" → "$colnormal
       case visual
-        set ps_vi $colbv"[v] "$colnormal
+        set ps_vi $colbv" v "$colnormal
     end
   else
     set ps_vi $colbi" → "$colnormal
