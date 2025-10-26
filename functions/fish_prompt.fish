@@ -59,16 +59,16 @@ function fish_prompt
 
   # insert mode color
   if test $last_status = 0
-    set colbi (set_color -o 778)  # green
+    set colbi (set_color -o 91a161)  # green
   else
     set colbi (set_color -o e67e80)  # red
   end
 
   set -l ps_vi ""
   # normal mode color
-  set -l colbn (set_color -o 778)
+  set -l colbn (set_color -o 0fbbb3) #blue
   # visual mode color
-  set -l colbv (set_color -o e67e80)
+  set -l colbv (set_color -o e67e80) #red
 
   if test "$fish_key_bindings" = "fish_vi_key_bindings" -o "$fish_key_bindings" = "my_fish_key_bindings" 
     switch $fish_bind_mode
@@ -80,7 +80,7 @@ function fish_prompt
         set ps_vi $colbv"[v] "$colnormal
     end
   else
-    set ps_vi $colbi"→ "$colnormal
+    set ps_vi $colbi" → "$colnormal
   end
 
   echo -n -s $ps_vi
