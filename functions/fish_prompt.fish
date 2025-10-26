@@ -77,19 +77,23 @@ function fish_prompt
   set -q sip_prompt_style; or set -g sip_prompt_style "default"
 
   # Determine prompt symbols based on style
+  set -l prompt_insert
+  set -l prompt_normal
+  set -l prompt_visual
+
   if test "$sip_prompt_style" = "default"
-    set -l prompt_insert " → "
-    set -l prompt_normal "n] "
-    set -l prompt_visual "v] "
+    set prompt_insert " → "
+    set prompt_normal "n] "
+    set prompt_visual "v] "
   else if test "$sip_prompt_style" = "short"
-    set -l prompt_insert "→ "
-    set -l prompt_normal "n]"
-    set -l prompt_visual "v]"
+    set prompt_insert "→ "
+    set prompt_normal "n]"
+    set prompt_visual "v]"
   else
     # Custom prompt - use the value as-is
-    set -l prompt_insert "$sip_prompt_style"
-    set -l prompt_normal "$sip_prompt_style"
-    set -l prompt_visual "$sip_prompt_style"
+    set prompt_insert "$sip_prompt_style"
+    set prompt_normal "$sip_prompt_style"
+    set prompt_visual "$sip_prompt_style"
   end
 
   # insert mode color
