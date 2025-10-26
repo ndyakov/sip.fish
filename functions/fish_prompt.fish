@@ -11,19 +11,28 @@ function _is_git_dirty
 end
 
 function _set_colors
-  set -g colyellow (set_color dbbc7f)
-  set -g colbyellow (set_color -o dbbc7f)
-  set -g colcyan   (set_color 83c092)
-  set -g colbcyan  (set_color -o 83c092)
-  set -g colblue  (set_color 7fbbb3)
-  set -g colbblue (set_color -o 7fbbb3)
-  set -g colgreen  (set_color a7c080)
-  set -g colbgreen (set_color -o a7c080)
+  # Set default colors if not already configured
+  set -q sip_color_yellow; or set -g sip_color_yellow dbbc7f
+  set -q sip_color_cyan; or set -g sip_color_cyan 83c092
+  set -q sip_color_blue; or set -g sip_color_blue 7fbbb3
+  set -q sip_color_green; or set -g sip_color_green a7c080
+  set -q sip_color_red; or set -g sip_color_red e67e80
+  set -q sip_color_white; or set -g sip_color_white f2efdf
+
+  # Apply colors
+  set -g colyellow (set_color $sip_color_yellow)
+  set -g colbyellow (set_color -o $sip_color_yellow)
+  set -g colcyan   (set_color $sip_color_cyan)
+  set -g colbcyan  (set_color -o $sip_color_cyan)
+  set -g colblue  (set_color $sip_color_blue)
+  set -g colbblue (set_color -o $sip_color_blue)
+  set -g colgreen  (set_color $sip_color_green)
+  set -g colbgreen (set_color -o $sip_color_green)
   set -g colnormal (set_color normal)
-  set -g colred    (set_color e67e80)
-  set -g colbred   (set_color -o e67e80)
-  set -g colwhite  (set_color f2efdf)
-  set -g colbwhite  (set_color -o f2efdf)
+  set -g colred    (set_color $sip_color_red)
+  set -g colbred   (set_color -o $sip_color_red)
+  set -g colwhite  (set_color $sip_color_white)
+  set -g colbwhite  (set_color -o $sip_color_white)
 end
 
 function fish_right_prompt
@@ -57,30 +66,56 @@ function fish_prompt
   _set_colors
   function fish_mode_prompt; end
 
+  # Set default vi mode colors if not already configured
+  set -q sip_color_vi_insert_success; or set -g sip_color_vi_insert_success 91a161
+  set -q sip_color_vi_insert_error; or set -g sip_color_vi_insert_error e67e80
+  set -q sip_color_vi_normal; or set -g sip_color_vi_normal 0fbbb3
+  set -q sip_color_vi_visual; or set -g sip_color_vi_visual e67e80
+
+  # Set default prompt style if not already configured
+  # Options: "default" (default), "short", or custom string
+  set -q sip_prompt_style; or set -g sip_prompt_style "default"
+
+  # Determine prompt symbols based on style
+  if test "$sip_prompt_style" = "default"
+    set -l prompt_insert " → "
+    set -l prompt_normal "n] "
+    set -l prompt_visual "v] "
+  else if test "$sip_prompt_style" = "short"
+    set -l prompt_insert "→ "
+    set -l prompt_normal "n]"
+    set -l prompt_visual "v]"
+  else
+    # Custom prompt - use the value as-is
+    set -l prompt_insert "$sip_prompt_style"
+    set -l prompt_normal "$sip_prompt_style"
+    set -l prompt_visual "$sip_prompt_style"
+  end
+
   # insert mode color
   if test $last_status = 0
-    set colbi (set_color -o 91a161)  # green
+    set colbi (set_color -o $sip_color_vi_insert_success)  # green
   else
-    set colbi (set_color -o e67e80)  # red
+    set colbi (set_color -o $sip_color_vi_insert_error)  # red
   end
 
   set -l ps_vi ""
   # normal mode color
-  set -l colbn (set_color -o 0fbbb3) #blue
+  set -l colbn (set_color -o $sip_color_vi_normal) #blue
   # visual mode color
-  set -l colbv (set_color -o e67e80) #red
+  set -l colbv (set_color -o $sip_color_vi_visual) #red
 
-  if test "$fish_key_bindings" = "fish_vi_key_bindings" -o "$fish_key_bindings" = "my_fish_key_bindings" 
+  if test "$fish_key_bindings" = "fish_vi_key_bindings" -o "$fish_key_bindings" = "my_fish_key_bindings"
     switch $fish_bind_mode
       case default
-        set ps_vi $colbn"n] "$colnormal
+        set ps_vi $colbn$prompt_normal$colnormal
       case insert
-        set ps_vi $colbi" → "$colnormal
+        set ps_vi $colbi$prompt_insert$colnormal
       case visual
-        set ps_vi $colbv"v] "$colnormal
+        set ps_vi $colbv$prompt_visual$colnormal
     end
   else
-    set ps_vi $colbi" → "$colnormal
+    set ps_vi $colbi$prompt_insert$colnormal
   end
 
   echo -n -s $ps_vi
