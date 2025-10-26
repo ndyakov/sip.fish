@@ -59,35 +59,28 @@ function fish_prompt
 
   # insert mode color
   if test $last_status = 0
-    set colbi (set_color -o a7c080)  # Success: Everforest green
+    set colbi (set_color -o 778)  # green
   else
-    set colbi (set_color -o e67e80)  # Error: Everforest red
+    set colbi (set_color -o e67e80)  # red
   end
 
   set -l ps_vi ""
   # normal mode color
   set -l colbn (set_color -o 778)
   # visual mode color
-  set -l colbv (set_color -o e18)
+  set -l colbv (set_color -o e67e80)
 
   if test "$fish_key_bindings" = "fish_vi_key_bindings" -o "$fish_key_bindings" = "my_fish_key_bindings" 
     switch $fish_bind_mode
       case default
         set ps_vi $colbn"[n] "$colnormal
       case insert
-        set ps_vi $colbi"→ "$colnormal
+        set ps_vi $colbi" → "$colnormal
       case visual
         set ps_vi $colbv"[v] "$colnormal
     end
   else
     set ps_vi $colbi"→ "$colnormal
-  end
-
-  if [ (which rbenv) ]
-    if [ (rbenv version-name) ]
-      set ruby_version (rbenv version-name)
-      set ruby_info "$colred($ruby_version)$colnormal"
-    end
   end
 
   echo -n -s $ps_vi
